@@ -44,7 +44,7 @@ public class StartListener extends MouseAdapter {
         if (run != null && run.isAlive()) {
             return;
         }
-        run = new Thread("BON2 Remapping Thread") {
+        run = new Thread("BON3 Remapping Thread") {
             @Override
             public void run() {
                 try {

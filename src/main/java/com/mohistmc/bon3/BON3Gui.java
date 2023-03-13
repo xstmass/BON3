@@ -61,7 +61,7 @@ public class BON3Gui extends JFrame {
 
     public BON3Gui() {
         setMinimumSize(new Dimension(550, 240));
-        setTitle("BON2");
+        setTitle("BON3");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(100, 100, 550, 240);
         JPanel contentPane = new JPanel();

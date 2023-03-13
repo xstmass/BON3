@@ -58,7 +58,7 @@ public class BrowseListener extends MouseAdapter {
         }
         if (returnState == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            String path = null;
+            String path;
             try {
                 path = file.getCanonicalPath();
             } catch (IOException ex) {
