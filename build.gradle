@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id "edu.sc.seis.launch4j" version "2.5.4"
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+version = '1.0'
+group = 'com.mohistmc'
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven{ url = 'https://files.minecraftforge.net/maven/'}
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
+    implementation 'net.minecraftforge:srgutils:0.4.13'
+    implementation 'org.ow2.asm:asm:9.4'
+    implementation 'org.ow2.asm:asm-commons:9.4'
+    implementation 'org.ow2.asm:asm-tree:9.4'
+}
+
+apply plugin: 'application'
+mainClassName = 'com.mohistmc.bon3.BON3'
+application {
+    mainClass = mainClassName
+}
+
+def MANIFEST = manifest {
+    attributes([
+        'Main-Class': mainClassName,
+        'Implementation-Title': 'Bearded Octo Nemesis 3',
+        'Implementation-Version': project.version,
+        'Built-With': 'Gradle v' + project.getGradle().getGradleVersion()
+    ] as LinkedHashMap)
+}
+
+jar.dependsOn(shadowJar)
+
+shadowJar {
+    archiveClassifier = null
+    manifest.from(MANIFEST)
+}
+
+launch4j {
+    mainClassName = mainClassName
+    jarTask = project.tasks.shadowJar
+}
