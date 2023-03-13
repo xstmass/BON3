@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import java.awt.Component;
 
 public class GUIErrorHandler implements IErrorHandler {
-    private Component parent;
+    private final Component parent;
 
     public GUIErrorHandler(Component parent) {
         this.parent = parent;

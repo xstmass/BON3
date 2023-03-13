@@ -51,11 +51,10 @@ public class BON3Gui extends JFrame {
     public static final String PREFS_KEY_SAVE_LOC = "closeLoc";
     private static final String PREFS_KEY_MC_VERSION = "mcVer";
     private static final String PREFS_KEY_MAP_VERSION = "mapVer";
-    private static final long serialVersionUID = -619289399889088924L;
 
     public final Preferences prefs = Preferences.userNodeForPackage(BON3Gui.class);
 
-    private JTextField inputJarLoc;
+    private final JTextField inputJarLoc;
     private JTextField outputJarLoc;
     private JLabel lblProgressText;
     private JProgressBar masterProgress;
@@ -222,9 +221,6 @@ public class BON3Gui extends JFrame {
 
         if (!comboBoxSelect(cmbMappingVersions, prefs.get(PREFS_KEY_MAP_VERSION, "")) && cmbMappingVersions.getItemCount() > 0)
             cmbMappingVersions.setSelectedIndex(0);
-
-        //MappingVersion mapver = (MappingVersion)cmbMappingVersions.getSelectedItem();
-        //btnMappingVerDownload.setEnabled((mapver != null && !mapver.getTarget(BONFiles.FG3_DOWNLOAD_CACHE).exists()));
 
         cmbMappingVersions.addActionListener(e -> {
             Object selected = cmbMappingVersions.getSelectedItem();

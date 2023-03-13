@@ -36,10 +36,10 @@ public enum HashFunction {
     SHA1("SHA-1", 40),
     SHA256("SHA-256", 64);
 
-    private String algo;
-    private String pad;
+    private final String algo;
+    private final String pad;
 
-    private HashFunction(String algo, int length) {
+    HashFunction(String algo, int length) {
         this.algo = algo;
         this.pad = String.format("%0" + length + "d", 0);
     }

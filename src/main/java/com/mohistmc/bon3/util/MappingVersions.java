@@ -46,8 +46,6 @@ public class MappingVersions {
         Map<MinecraftVersion, Set<MappingVersion>> versions = new HashMap<>();
         merge(versions, findBotExport());
         //MCPBot does not publish as a real maven artifact, so we can't use the standard Forge Maven metadata system.
-        //merge(versions, findForgeSnapshot());
-        //merge(versions, findForgeStable());
         merge(versions, findOfficial());
 
         Map<MinecraftVersion, List<MappingVersion>> ret = new TreeMap<>(); //TreeMaps are sorted...
@@ -147,8 +145,8 @@ public class MappingVersions {
         }
     }
 
-    public static enum Type {
-        SNAPSHOT, STABLE, OFFICIAL;
+    public enum Type {
+        SNAPSHOT, STABLE, OFFICIAL
     }
 
     public static class BotManifestEntry {
@@ -230,9 +228,8 @@ public class MappingVersions {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof MappingVersion))
+            if (!(o instanceof MappingVersion om))
                 return false;
-            MappingVersion om = (MappingVersion) o;
             return this.mcver.equals(om.mcver) && this.type == om.type && this.version == om.version;
         }
     }

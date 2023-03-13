@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 //Most of this code is just stolen straight from ForgeGradle, I am just to lazy to re-write it.
 //It's so simple, I give it freely. -Lex
 public class DownloadUtils {
-    private static final int CACHE_TIMEOUT = 1000 * 60 * 60 * 1; //1 hour, so we don't spam the server
+    private static final int CACHE_TIMEOUT = 1000 * 60 * 60; //1 hour, so we don't spam the server
 
     private static HttpURLConnection connectHttpWithRedirects(URL url) throws IOException {
         return connectHttpWithRedirects(url, (setupCon) -> {
@@ -34,9 +34,7 @@ public class DownloadUtils {
         if ("http".equalsIgnoreCase(url.getProtocol())) {
             int responseCode = con.getResponseCode();
             switch (responseCode) {
-                case HttpURLConnection.HTTP_MOVED_TEMP:
-                case HttpURLConnection.HTTP_MOVED_PERM:
-                case HttpURLConnection.HTTP_SEE_OTHER:
+                case HttpURLConnection.HTTP_MOVED_TEMP, HttpURLConnection.HTTP_MOVED_PERM, HttpURLConnection.HTTP_SEE_OTHER -> {
                     String newLocation = con.getHeaderField("Location");
                     URL newUrl = new URL(newLocation);
                     if ("https".equalsIgnoreCase(newUrl.getProtocol())) {
@@ -45,7 +43,7 @@ public class DownloadUtils {
                         // See https://bugs.java.com/bugdatabase/view_bug.do?bug_id=4959149
                         return connectHttpWithRedirects(newUrl, setup);
                     }
-                    break;
+                }
             }
         }
         return con;
@@ -66,7 +64,7 @@ public class DownloadUtils {
         File efile = new File(output.getAbsolutePath() + ".etag");
         String etag = "";
         if (efile.exists())
-            etag = new String(Files.readAllBytes(efile.toPath()), StandardCharsets.UTF_8);
+            etag = Files.readString(efile.toPath());
 
         final String initialEtagValue = etag;
         HttpURLConnection con = connectHttpWithRedirects(url, (setupCon) -> {
@@ -102,7 +100,7 @@ public class DownloadUtils {
                 if (etag == null || etag.isEmpty())
                     Files.write(efile.toPath(), new byte[0]);
                 else
-                    Files.write(efile.toPath(), etag.getBytes(StandardCharsets.UTF_8));
+                    Files.writeString(efile.toPath(), etag);
                 return true;
             } catch (IOException e) {
                 output.delete();
@@ -213,7 +211,7 @@ public class DownloadUtils {
         String actual = target.exists() ? HashFunction.MD5.hash(target) : null;
 
         if (target.exists() && !(changing || bypassLocal)) {
-            String expected = md5_file.exists() ? new String(Files.readAllBytes(md5_file.toPath()), StandardCharsets.UTF_8) : null;
+            String expected = md5_file.exists() ? Files.readString(md5_file.toPath()) : null;
             if (expected == null || expected.equals(actual))
                 return true;
             target.delete();

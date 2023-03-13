@@ -38,12 +38,12 @@ public class BON3Impl {
         if (mcp != null) {
             ClassCollection client = JarUtils.readFromJar(new File(BONFiles.FG3_MC_CACHE, mcp.getMCVersion() + "/client.jar"), errorHandler, progress, false);
             ClassCollection server = JarUtils.readFromJar(new File(BONFiles.FG3_MC_CACHE, mcp.getMCVersion() + "/server.jar"), errorHandler, progress, false);
-            progress.start(client.getClasses().size() + server.getClasses().size() + inputCC.getClasses().size(), "Building inheritance");
+            progress.start(client.classes().size() + server.classes().size() + inputCC.classes().size(), "Building inheritance");
 
             Inheritance inh = new Inheritance();
             inh.addTree(client, false, 0, progress);
-            inh.addTree(server, true, client.getClasses().size(), progress);
-            inh.addTree(inputCC, false, client.getClasses().size() + server.getClasses().size(), progress);
+            inh.addTree(server, true, client.classes().size(), progress);
+            inh.addTree(inputCC, false, client.classes().size() + server.classes().size(), progress);
             inh.bake(progress);
 
             File mcpTarget = mcp.getTarget();

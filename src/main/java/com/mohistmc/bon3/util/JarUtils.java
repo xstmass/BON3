@@ -87,8 +87,8 @@ public class JarUtils {
             file.delete();
         }
         int written = 1;
-        Manifest manifest = cc.getManifest();
-        progress.start(cc.getClasses().size() + cc.getExtraFiles().size() + (manifest == null ? 0 : 1), "Writing remapped JAR");
+        Manifest manifest = cc.manifest();
+        progress.start(cc.classes().size() + cc.extraFiles().size() + (manifest == null ? 0 : 1), "Writing remapped JAR");
 
         try (JarOutputStream jout = new JarOutputStream(new FileOutputStream(file))) {
 
@@ -100,13 +100,13 @@ public class JarUtils {
                 progress.setProgress(written++);
             }
 
-            for (ClassNode classNode : cc.getClasses()) {
+            for (ClassNode classNode : cc.classes()) {
                 startEntry(jout, classNode.name + ".class", dirs);
                 jout.write(writeClassToBytes(classNode, remapper));
                 progress.setProgress(written++);
             }
 
-            for (Map.Entry<String, byte[]> entry : cc.getExtraFiles().entrySet()) {
+            for (Map.Entry<String, byte[]> entry : cc.extraFiles().entrySet()) {
                 startEntry(jout, entry.getKey(), dirs);
                 jout.write(entry.getValue());
                 progress.setProgress(written++);

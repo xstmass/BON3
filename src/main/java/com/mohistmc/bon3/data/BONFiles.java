@@ -10,7 +10,7 @@ public class BONFiles {
     public static final File MINECRAFTFORGE_FORGE_FOLDER = getFolder("minecraft/net/minecraftforge/forge/");
     public static final File OCEANLABS_MCP_FOLDER = getFolder("minecraft/de/oceanlabs/mcp/");
 
-    private static final File getFolder(String path) {
+    private static File getFolder(String path) {
         return new File(GRADLE_CACHES_FOLDER, path.replace("/", File.separator));
     }
 }

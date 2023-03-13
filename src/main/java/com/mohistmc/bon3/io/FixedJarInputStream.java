@@ -18,13 +18,11 @@ public class FixedJarInputStream extends JarInputStream {
     public FixedJarInputStream(File file, boolean verify) throws IOException {
         super(new FileInputStream(file), verify);
         JarFile jar = new JarFile(file);
-        JarEntry manifestEntry = jar.getJarEntry(JarFile.MANIFEST_NAME);
-        try {
+        try (jar) {
+            JarEntry manifestEntry = jar.getJarEntry(JarFile.MANIFEST_NAME);
             if (manifestEntry != null) {
                 this.manifest = new Manifest(jar.getInputStream(manifestEntry));
             }
-        } finally {
-            jar.close();
         }
     }
 

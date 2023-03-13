@@ -56,7 +56,6 @@ import java.util.zip.ZipOutputStream;
 
 public class GuiDownloadNew extends JFrame {
     private static final String[] MONTHS = new DateFormatSymbols().getMonths();
-    private static final long serialVersionUID = -5671034374840427145L;
     private final Runnable refresh;
 
     private Thread downloadTask;
@@ -70,7 +69,7 @@ public class GuiDownloadNew extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Minecraft Versions");
-        final List<MinecraftVersion> sortedVersions = data.keySet().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+        final List<MinecraftVersion> sortedVersions = data.keySet().stream().sorted(Collections.reverseOrder()).toList();
 
         for (MinecraftVersion mcver : sortedVersions) {
             DefaultMutableTreeNode mcnode = new DefaultMutableTreeNode(mcver.toString());
@@ -81,21 +80,18 @@ public class GuiDownloadNew extends JFrame {
 
             types.forEach((t, l) -> {
                 switch (t) {
-                    case STABLE:
+                    case STABLE -> {
                         DefaultMutableTreeNode stables = new DefaultMutableTreeNode("Stable");
                         mcnode.add(stables);
                         l.stream().sorted(Collections.reverseOrder()).forEach(e -> stables.add(new NameableDefaultMutableTreeNode(e.getVersion() + "", e)));
-                        break;
-                    case SNAPSHOT:
+                    }
+                    case SNAPSHOT -> {
                         DefaultMutableTreeNode snaps = new DefaultMutableTreeNode("Snapshot");
                         mcnode.add(snaps);
-
                         Map<Integer, Map<Integer, List<MappingVersion>>> versionsUnsorted = l.stream()
                                 .collect(Collectors.groupingBy(e -> e.getVersion() / 10000, Collectors.groupingBy(e -> (e.getVersion() / 100) % 100)));
-
                         Map<Integer, Map<Integer, List<MappingVersion>>> versions = new TreeMap<>(Collections.reverseOrder());
                         versions.putAll(versionsUnsorted);
-
                         versions.forEach((year, months) -> {
                             Map<Integer, List<MappingVersion>> sorted = new TreeMap<>(Collections.reverseOrder());
                             sorted.putAll(months);
@@ -108,10 +104,8 @@ public class GuiDownloadNew extends JFrame {
                             });
                             snaps.add(yearNode);
                         });
-                        break;
-                    case OFFICIAL:
-                        mcnode.add(new NameableDefaultMutableTreeNode("Mojang", l.get(0)));
-                        break;
+                    }
+                    case OFFICIAL -> mcnode.add(new NameableDefaultMutableTreeNode("Mojang", l.get(0)));
                 }
             });
         }
@@ -147,9 +141,7 @@ public class GuiDownloadNew extends JFrame {
 
         JButton buttonDownloadSpecific = new JButton("Download");
         buttonDownloadSpecific.setEnabled(false);
-        BONUtils.addChangeListener(textFieldVersion, e -> {
-            buttonDownloadSpecific.setEnabled(textFieldVersion.getText().matches("stable_[0-9]{1,3}|snapshot_[0-9]{8}"));
-        });
+        BONUtils.addChangeListener(textFieldVersion, e -> buttonDownloadSpecific.setEnabled(textFieldVersion.getText().matches("stable_[0-9]{1,3}|snapshot_[0-9]{8}")));
 
         JButton buttonCancel = new JButton("Cancel");
         buttonCancel.setEnabled(false);
@@ -290,7 +282,6 @@ public class GuiDownloadNew extends JFrame {
     }
 
     private static class NameableDefaultMutableTreeNode extends DefaultMutableTreeNode {
-        private static final long serialVersionUID = -7895415303737908716L;
         private final String name;
 
         public NameableDefaultMutableTreeNode(String name, Object obj) {

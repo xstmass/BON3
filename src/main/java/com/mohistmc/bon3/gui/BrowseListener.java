@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 public class BrowseListener extends MouseAdapter {
-    private BON3Gui parent;
-    private boolean isOpen;
-    private JTextField field;
-    private JFileChooser fileChooser;
+    private final BON3Gui parent;
+    private final boolean isOpen;
+    private final JTextField field;
+    private final JFileChooser fileChooser;
 
     public BrowseListener(BON3Gui parent, boolean isOpen, JTextField field) {
         this.parent = parent;

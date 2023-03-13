@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class MinecraftVersions {
     private static final String MANIFEST_URL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
     private static List<MinecraftVersion> knownVersions;
-    private static Map<MinecraftVersion, URL> versionUrls = new HashMap<>();
+    private static final Map<MinecraftVersion, URL> versionUrls = new HashMap<>();
 
     public static List<MinecraftVersion> getKnownVersions() {
         return getKnownVersions(false);
@@ -28,10 +28,9 @@ public class MinecraftVersions {
         if (!force && knownVersions != null)
             return knownVersions;
 
-        Set<MinecraftVersion> versions = new HashSet<>();
-        versions.addAll(findFromLauncherManifest());
+        Set<MinecraftVersion> versions = new HashSet<>(findFromLauncherManifest());
         //TODO: Other discovery?
-        knownVersions = Collections.unmodifiableList(versions.stream().sorted().collect(Collectors.toList()));
+        knownVersions = versions.stream().sorted().toList();
         return knownVersions;
     }
 
@@ -53,7 +52,7 @@ public class MinecraftVersions {
                 return Collections.emptyMap();
             }
 
-            return cfg.downloads.entrySet().stream().filter(e -> e.getValue() != null && e.getValue().url != null).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().url));
+            return cfg.downloads.entrySet().stream().filter(e -> e.getValue() != null && e.getValue().url != null).collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().url));
         } catch (IOException e) {
             System.out.println("Failed to download version configuration from: " + url);
             e.printStackTrace();

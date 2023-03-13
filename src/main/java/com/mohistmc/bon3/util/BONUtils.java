@@ -113,7 +113,7 @@ public class BONUtils {
                     BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
 
                     int b;
-                    byte buffer[] = new byte[1024];
+                    byte[] buffer = new byte[1024];
 
                     FileOutputStream fos = new FileOutputStream(destinationPath);
 

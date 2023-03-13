@@ -17,14 +17,14 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 public class StartListener extends MouseAdapter {
-    private BON3Gui parent;
+    private final BON3Gui parent;
     private Thread run = null;
-    private JTextField input;
-    private JTextField output;
-    private JComboBox<MinecraftVersion> mcVer;
-    private JComboBox<MappingVersions.MappingVersion> mappingVer;
-    private JLabel progressLabel;
-    private JProgressBar progressBar;
+    private final JTextField input;
+    private final JTextField output;
+    private final JComboBox<MinecraftVersion> mcVer;
+    private final JComboBox<MappingVersions.MappingVersion> mappingVer;
+    private final JLabel progressLabel;
+    private final JProgressBar progressBar;
 
     public StartListener(BON3Gui parent, JTextField input, JTextField output, JComboBox<MinecraftVersion> mcVer, JComboBox<MappingVersions.MappingVersion> mappingVer, JLabel progressLabel, JProgressBar progressBar) {
         this.parent = parent;
@@ -53,7 +53,7 @@ public class StartListener extends MouseAdapter {
 
                     BON3Impl.remap(new File(input.getText()), new File(output.getText()), mcp, map, new GUIErrorHandler(parent), new GUIProgressListener(progressLabel, progressBar));
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(parent, "There was an error.\n" + ex.toString() + "\n" + getFormattedStackTrace(ex.getStackTrace()), BON3Gui.ERROR_DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(parent, "There was an error.\n" + ex + "\n" + getFormattedStackTrace(ex.getStackTrace()), BON3Gui.ERROR_DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
                 }
             }
         };

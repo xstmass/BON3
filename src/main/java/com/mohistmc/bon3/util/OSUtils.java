@@ -4,7 +4,7 @@ package com.mohistmc.bon3.util;
 import java.util.Locale;
 
 public class OSUtils {
-    private static String OSProp = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+    private static final String OSProp = System.getProperty("os.name").toLowerCase(Locale.ROOT);
     private static OS current = null;
 
     public static OS getOS() {

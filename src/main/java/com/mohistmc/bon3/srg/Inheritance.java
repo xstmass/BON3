@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public class Inheritance {
 
-    private Map<String, IClass> classes = new HashMap<>();
+    private final Map<String, IClass> classes = new HashMap<>();
 
     private static String toAccessString(int access) {
         String ret = "";
@@ -30,7 +30,7 @@ public class Inheritance {
     }
 
     public int addTree(ClassCollection collection, boolean merge, int base, IProgressListener progress) {
-        for (ClassNode node : collection.getClasses()) {
+        for (ClassNode node : collection.classes()) {
             progress.setProgress(++base);
             IClass cls = new IClass(node);
             IClass existing = classes.putIfAbsent(cls.name, cls);
@@ -182,7 +182,6 @@ public class Inheritance {
 
     private static class IClass {
         private final String name;
-        private final int access;
         private final String parent;
         private final String string;
         private final Set<String> interfaces = new HashSet<>();
@@ -192,11 +191,11 @@ public class Inheritance {
 
         IClass(ClassNode cls) {
             this.name = cls.name;
-            this.access = cls.access;
+            int access = cls.access;
             this.parent = cls.superName;
-            this.string = toAccessString(this.access) + " " +
-                          ((this.access & Opcodes.ACC_INTERFACE) != 0 ? "interface " : "class ") +
-                          ((this.access & Opcodes.ACC_ANNOTATION) != 0 ? "@" : "") +
+            this.string = toAccessString(access) + " " +
+                          ((access & Opcodes.ACC_INTERFACE) != 0 ? "interface " : "class ") +
+                          ((access & Opcodes.ACC_ANNOTATION) != 0 ? "@" : "") +
                           this.name;
 
             if (cls.interfaces != null)
@@ -215,8 +214,8 @@ public class Inheritance {
 
         void merge(IClass other) {
             this.interfaces.addAll(other.interfaces);
-            other.fields.forEach((k, v) -> this.fields.putIfAbsent(k, v));
-            other.methods.forEach((k, v) -> this.methods.putIfAbsent(k, v));
+            other.fields.forEach(this.fields::putIfAbsent);
+            other.methods.forEach(this.methods::putIfAbsent);
         }
 
         @Override

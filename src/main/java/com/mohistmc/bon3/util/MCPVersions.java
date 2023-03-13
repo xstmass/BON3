@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class MCPVersions {
     private static final String FORGE_MAVEN = "https://maven.minecraftforge.net/";
@@ -53,7 +52,7 @@ public class MCPVersions {
         versions.addAll(findMcp());
         versions.addAll(findMcpConfig());
         //TODO: Other discovery?
-        knownVersions = Collections.unmodifiableList(versions.stream().sorted().collect(Collectors.toList()));
+        knownVersions = versions.stream().sorted().toList();
         return knownVersions;
     }
 

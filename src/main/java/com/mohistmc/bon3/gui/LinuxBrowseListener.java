@@ -11,10 +11,10 @@ import java.io.File;
 import java.nio.file.Paths;
 
 public class LinuxBrowseListener extends MouseAdapter {
-    private BON3Gui parent;
-    private boolean isOpen;
-    private JTextField field;
-    private FileDialog fd;
+    private final BON3Gui parent;
+    private final boolean isOpen;
+    private final JTextField field;
+    private final FileDialog fd;
 
     public LinuxBrowseListener(BON3Gui parent, boolean isOpen, JTextField field) {
         this.parent = parent;

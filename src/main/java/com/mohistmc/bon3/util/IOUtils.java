@@ -60,7 +60,7 @@ public class IOUtils {
         }
     }
 
-    public static <T> T loadJson(InputStream in, Class<T> clz) throws IOException {
+    public static <T> T loadJson(InputStream in, Class<T> clz) {
         return GSON.fromJson(new InputStreamReader(in), clz);
     }
 
