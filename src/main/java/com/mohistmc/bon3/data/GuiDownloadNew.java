@@ -69,7 +69,7 @@ public class GuiDownloadNew extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Minecraft Versions");
-        final List<MinecraftVersion> sortedVersions = data.keySet().stream().sorted(Collections.reverseOrder()).toList();
+        final List<MinecraftVersion> sortedVersions = data.keySet().stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
 
         for (MinecraftVersion mcver : sortedVersions) {
             DefaultMutableTreeNode mcnode = new DefaultMutableTreeNode(mcver.toString());

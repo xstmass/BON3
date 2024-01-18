@@ -6,7 +6,7 @@ plugins {
 
 version = '1.0'
 group = 'com.mohistmc'
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
@@ -24,6 +24,20 @@ dependencies {
     implementation 'org.ow2.asm:asm:9.4'
     implementation 'org.ow2.asm:asm-commons:9.4'
     implementation 'org.ow2.asm:asm-tree:9.4'
+
+    annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
+    compileOnly 'com.github.bsideup.jabel:jabel-javac-plugin:0.4.2'
+}
+
+
+
+configure([tasks.compileJava]) {
+    sourceCompatibility = 17 // for the IDE support
+    options.release = 8
+
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 apply plugin: 'application'

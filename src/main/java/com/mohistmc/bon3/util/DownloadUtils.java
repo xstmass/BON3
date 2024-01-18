@@ -64,7 +64,7 @@ public class DownloadUtils {
         File efile = new File(output.getAbsolutePath() + ".etag");
         String etag = "";
         if (efile.exists())
-            etag = Files.readString(efile.toPath());
+            etag = new String(Files.readAllBytes(efile.toPath()), StandardCharsets.UTF_8);
 
         final String initialEtagValue = etag;
         HttpURLConnection con = connectHttpWithRedirects(url, (setupCon) -> {
@@ -100,7 +100,7 @@ public class DownloadUtils {
                 if (etag == null || etag.isEmpty())
                     Files.write(efile.toPath(), new byte[0]);
                 else
-                    Files.writeString(efile.toPath(), etag);
+                    Files.write(efile.toPath(), etag.getBytes(StandardCharsets.UTF_8));
                 return true;
             } catch (IOException e) {
                 output.delete();
@@ -211,7 +211,7 @@ public class DownloadUtils {
         String actual = target.exists() ? HashFunction.MD5.hash(target) : null;
 
         if (target.exists() && !(changing || bypassLocal)) {
-            String expected = md5_file.exists() ? Files.readString(md5_file.toPath()) : null;
+            String expected = md5_file.exists() ? new String(Files.readAllBytes(md5_file.toPath()), StandardCharsets.UTF_8) : null;
             if (expected == null || expected.equals(actual))
                 return true;
             target.delete();

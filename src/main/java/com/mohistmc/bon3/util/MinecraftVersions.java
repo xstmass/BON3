@@ -30,7 +30,7 @@ public class MinecraftVersions {
 
         Set<MinecraftVersion> versions = new HashSet<>(findFromLauncherManifest());
         //TODO: Other discovery?
-        knownVersions = versions.stream().sorted().toList();
+        knownVersions = versions.stream().sorted().collect(Collectors.toList());
         return knownVersions;
     }
 
